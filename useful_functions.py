@@ -176,12 +176,7 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
     pdf.multi_cell(half_page_width, 10, top_sites_html)  # Affichez le contenu du tableau en plusieurs lignes
 
     # Générez une capture d'écran de folium_static(world_map) et insérez-la dans le PDF
-    img_buffer = io.BytesIO()
-    img.save(img_buffer, format='PNG')
-    img = Image.open(img_buffer)
-    img_width = half_page_width - 10  # Ajustez la largeur de l'image selon vos besoins
-    img_height = img_width * img.height / img.width
-    pdf.image(img_buffer, x=half_page_width + 10, y=100, w=img_width, h=img_height)
+    st.image(world_map, use_container_width=True, format="PNG")
 
     # Ajoutez ici le reste du contenu du PDF en utilisant les informations de 'event_data'
     # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
