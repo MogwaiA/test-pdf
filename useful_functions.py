@@ -179,7 +179,8 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map,p
 
     #pdf_file_path = "rapport_seismes.pdf"
     pdf.output(path)
-    return pdf_file_path
+    
+    return path
 
 def get_save_path():
     root = tk.Tk()

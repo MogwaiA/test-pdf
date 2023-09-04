@@ -352,13 +352,12 @@ def rapports_seismes():
             # Afficher le tableau HTML dans Streamlit
             st.markdown(html_table, unsafe_allow_html=True)
 
-            if st.button("Télécharger le résumé en PDF"):
-                file_path = get_save_path()
-                pdf_file_path = generate_pdf(n_sites_touches=n_sites_touches, mmi_sites=mmi_sites, values=values, top_sites_html=top_sites_html, world_map=world_map,path=file_path)  # Remplacez 'event_data' par les données à inclure dans le PDF
-                success(f"Le PDF a été généré avec succès.")
-
-            
     
+            # Exemple d'utilisation de la fonction generate_pdf avec le chemin spécifié par l'utilisateur
+            if st.button("Générer le rapport PDF"):
+                pdf_file_path = st.text_input("Chemin du fichier PDF", "rapport_seismes.pdf")
+                pdf_file = generate_pdf(event_data, n_sites_touches, mmi_sites, values, top_sites_html, world_map, pdf_file_path)
+                st.markdown(f"[Télécharger le PDF]({pdf_file})")
         
 
 
