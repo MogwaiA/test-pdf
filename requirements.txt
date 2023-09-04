@@ -1,0 +1,9 @@
+pandas
+streamlit_folium
+numpy
+streamlit==1.26.0
+matplotlib
+scipy
+openpyxl
+fpdf
+pillow
