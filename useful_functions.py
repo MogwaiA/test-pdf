@@ -12,11 +12,8 @@ from scipy.spatial.distance import cdist
 import openpyxl
 import matplotlib.pyplot as plt
 import numpy as np
-from fpdf import FPDF
-from PIL import Image
-import io
-import tempfile
-
+import tkinter as tk
+from tkinter import filedialog
 
 def load_data(file):
     data = pd.read_csv(file,sep=',') if file.name.endswith('.csv') else pd.read_excel(file, engine='openpyxl')
@@ -146,7 +143,7 @@ def download_list_event(period,mmi=0):
 
     return df_event
 
-def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
+def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map,path):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -180,6 +177,12 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
     # Ajoutez ici le reste du contenu du PDF en utilisant les informations de 'event_data'
     # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
 
-    pdf_file_path = "rapport_seismes.pdf"
-    pdf.output(pdf_file_path)
+    #pdf_file_path = "rapport_seismes.pdf"
+    pdf.output(path)
     return pdf_file_path
+
+def get_save_path():
+    root = tk.Tk()
+    root.withdraw()  # Cacher la fenêtre principale de tkinter
+    file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("Fichiers PDF", "*.pdf")])
+    return file_path
