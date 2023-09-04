@@ -354,7 +354,13 @@ def rapports_seismes():
 
             if st.button("Télécharger le résumé en PDF"):
                 pdf_file_path = generate_pdf(n_sites_touches=n_sites_touches, mmi_sites=mmi_sites, values=values, top_sites_html=top_sites_html, world_map=world_map)  # Remplacez 'event_data' par les données à inclure dans le PDF
-                st.success(f"Le PDF a été généré avec succès. [Télécharger le PDF]({pdf_file_path})")
+                st.download_button(
+                label="Cliquez ici pour télécharger le PDF",
+                key="download_pdf",
+                data=pdf_file_path,
+                file_name="rapport_seismes.pdf",  # Nom de fichier par défaut
+                )
+                st.success(f"Le PDF a été généré avec succès.")
 
 
         
