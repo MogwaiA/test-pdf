@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 from fpdf import FPDF
+import tempfile
 
 
 def load_data(file):
@@ -180,15 +181,10 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html):
     # Ajoutez ici le reste du contenu du PDF en utilisant les informations de 'event_data'
     # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
 
-    # Utilisez la boîte de dialogue pour sélectionner le chemin de sauvegarde
-    pdf_output = io.BytesIO()
-    pdf.output(pdf_output)
-    pdf_bytes = pdf_output.getvalue()
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
+        pdf_output = io.BytesIO()
+        pdf.output(pdf_output)
+        pdf_bytes = pdf_output.getvalue()
+        temp_file.write(pdf_bytes)
 
-    return pdf_bytes
-
-def get_save_path():
-    root = tk.Tk()
-    root.withdraw()  # Cacher la fenêtre principale de tkinter
-    file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("Fichiers PDF", "*.pdf")])
-    return file_path
+    return temp_file.name
