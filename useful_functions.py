@@ -12,7 +12,8 @@ from scipy.spatial.distance import cdist
 import openpyxl
 import matplotlib.pyplot as plt
 import numpy as np
-from tkinter import Tk, filedialog
+import io
+
 
 def load_data(file):
     data = pd.read_csv(file,sep=',') if file.name.endswith('.csv') else pd.read_excel(file, engine='openpyxl')
@@ -179,15 +180,11 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html):
     # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
 
     # Utilisez la boîte de dialogue pour sélectionner le chemin de sauvegarde
-    root = Tk()
-    root.withdraw()  # Masquez la fenêtre principale
-    pdf_file_path = filedialog.asksaveasfilename(defaultextension=".pdf", filetypes=[("PDF files", "*.pdf")])
-
-    if pdf_file_path:
-        pdf.output(pdf_file_path)
-        return pdf_file_path
-    else:
-        return None
+    pdf_output = io.BytesIO()
+    pdf.output(pdf_output)
+    pdf_bytes = pdf_output.getvalue()
+    
+    return pdf_bytes
 
 def get_save_path():
     root = tk.Tk()
