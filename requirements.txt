@@ -7,3 +7,4 @@ scipy
 openpyxl
 fpdf
 pillow
+imgkit
