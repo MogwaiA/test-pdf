@@ -355,8 +355,7 @@ def rapports_seismes():
     
             # Exemple d'utilisation de la fonction generate_pdf avec le chemin spécifié par l'utilisateur
             if st.button("Générer le rapport PDF"):
-                pdf_file_path = st.text_input("Chemin du fichier PDF", "rapport_seismes.pdf")
-                pdf_file = generate_pdf(event_data, n_sites_touches, mmi_sites, values, top_sites_html, world_map, pdf_file_path)
+                pdf_file = generate_pdf(event_data, n_sites_touches, mmi_sites, values, top_sites_html)
                 st.markdown(f"[Télécharger le PDF]({pdf_file})")
         
 
