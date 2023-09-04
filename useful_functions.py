@@ -12,8 +12,6 @@ from scipy.spatial.distance import cdist
 import openpyxl
 import matplotlib.pyplot as plt
 import numpy as np
-import tkinter as tk
-from tkinter import filedialog
 
 def load_data(file):
     data = pd.read_csv(file,sep=',') if file.name.endswith('.csv') else pd.read_excel(file, engine='openpyxl')
@@ -179,7 +177,7 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map,p
 
     #pdf_file_path = "rapport_seismes.pdf"
     pdf.output(path)
-    
+
     return path
 
 def get_save_path():
