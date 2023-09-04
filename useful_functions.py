@@ -13,6 +13,7 @@ import openpyxl
 import matplotlib.pyplot as plt
 import numpy as np
 import io
+from fpdf import FPDF
 
 
 def load_data(file):
@@ -183,7 +184,7 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html):
     pdf_output = io.BytesIO()
     pdf.output(pdf_output)
     pdf_bytes = pdf_output.getvalue()
-    
+
     return pdf_bytes
 
 def get_save_path():
