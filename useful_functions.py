@@ -15,6 +15,8 @@ import numpy as np
 from fpdf import FPDF
 from PIL import Image
 import io
+import tempfile
+import imgkit
 
 def load_data(file):
     data = pd.read_csv(file,sep=',') if file.name.endswith('.csv') else pd.read_excel(file, engine='openpyxl')
@@ -176,10 +178,10 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
     pdf.multi_cell(half_page_width, 10, top_sites_html)  # Affichez le contenu du tableau en plusieurs lignes
 
     # Générez une capture d'écran de folium_static(world_map) et insérez-la dans le PDF
-    map_img = folium.Figure().add_child(world_map).get_root().render()
-    map_img = folium.Figure().add_child(world_map).get_root().render()
-    map_img = Image.open(io.BytesIO(map_img.encode('utf8')))
-    pdf.image(map_img)
+    #map_img = folium.Figure().add_child(world_map).get_root().render()
+    #map_img = folium.Figure().add_child(world_map).get_root().render()
+    #map_img = Image.open(io.BytesIO(map_img.encode('utf8')))
+    #pdf.image(map_img)
 
     # Ajoutez ici le reste du contenu du PDF en utilisant les informations de 'event_data'
     # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
