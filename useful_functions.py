@@ -16,7 +16,7 @@ from fpdf import FPDF
 from PIL import Image
 import io
 import tempfile
-import imgkit
+
 
 def load_data(file):
     data = pd.read_csv(file,sep=',') if file.name.endswith('.csv') else pd.read_excel(file, engine='openpyxl')
