@@ -353,7 +353,7 @@ def rapports_seismes():
             st.markdown(html_table, unsafe_allow_html=True)
 
             if st.button("Télécharger le résumé en PDF"):
-                pdf_file_path = generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map)  # Remplacez 'event_data' par les données à inclure dans le PDF
+                pdf_file_path = generate_pdf(n_sites_touches=n_sites_touches, mmi_sites=mmi_sites, values=values, top_sites_html=top_sites_html, world_map=world_map)  # Remplacez 'event_data' par les données à inclure dans le PDF
                 st.success(f"Le PDF a été généré avec succès. [Télécharger le PDF]({pdf_file_path})")
 
 
