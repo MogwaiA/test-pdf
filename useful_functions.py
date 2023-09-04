@@ -144,7 +144,7 @@ def download_list_event(period,mmi=0):
 
     return df_event
 
-def generate_pdf(event_data, n_sites_touches, mmi_sites, values, top_sites_html, world_map):
+def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)

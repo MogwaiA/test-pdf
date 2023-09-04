@@ -352,9 +352,9 @@ def rapports_seismes():
             # Afficher le tableau HTML dans Streamlit
             st.markdown(html_table, unsafe_allow_html=True)
 
-           # if st.button("Télécharger le résumé en PDF"):
-           #     pdf_file_path = generate_pdf(event_data)  # Remplacez 'event_data' par les données à inclure dans le PDF
-           #     st.success(f"Le PDF a été généré avec succès. [Télécharger le PDF]({pdf_file_path})")
+            if st.button("Télécharger le résumé en PDF"):
+                pdf_file_path = generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map)  # Remplacez 'event_data' par les données à inclure dans le PDF
+                st.success(f"Le PDF a été généré avec succès. [Télécharger le PDF]({pdf_file_path})")
 
 
         
