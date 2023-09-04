@@ -177,7 +177,7 @@ def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html, world_map):
 
     # Générez une capture d'écran de folium_static(world_map) et insérez-la dans le PDF
     img_buffer = io.BytesIO()
-    world_map.save(img_buffer, format='PNG')
+    img.save(img_buffer, format='PNG')
     img = Image.open(img_buffer)
     img_width = half_page_width - 10  # Ajustez la largeur de l'image selon vos besoins
     img_height = img_width * img.height / img.width
