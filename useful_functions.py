@@ -15,9 +15,8 @@ import numpy as np
 import io
 from fpdf import FPDF
 import tempfile
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+from io import BytesIO
+from reportlab.pdfgen import canvas
 
 
 def load_data(file):
@@ -150,5 +149,20 @@ def download_list_event(period,mmi=0):
 
 
 def generate_pdf(html_content):
-    pdf = weasyprint.HTML(string=html_content).write_pdf()
-    return pdf
+    # Créez un objet BytesIO pour stocker le PDF en mémoire
+    pdf_buffer = BytesIO()
+
+    # Créez le document PDF
+    p = canvas.Canvas(pdf_buffer)
+
+    # Écrivez le contenu HTML sur le PDF
+    p.drawString(100, 750, html_content)
+
+    # Fermez le PDF
+    p.showPage()
+    p.save()
+
+    # Retournez les données du PDF
+    pdf_buffer.seek(0)
+    return pdf_buffer.read()
+
