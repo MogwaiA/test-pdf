@@ -188,16 +188,17 @@ def generate_pdf(html_content):
     # Extraire les données du tableau
     table_data = extract_table_data(html_content)
 
+    num_cols = len(table_data[0])
+    col_widths = [50/num_cols] * num_cols
+
     # Créez un objet Table à partir des données du tableau
-    table = Table(table_data, colWidths=[50]*len(table_data[0]))
+    table = Table(table_data, colWidths=col_widths)
     table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), (0.9, 0.9, 0.9)),
                                ('GRID', (0, 0), (-1, -1), 1, (0.2, 0.2, 0.2))]))
 
     for i, col_width in enumerate(col_widths):
         font_size = calculate_font_size(col_width)
-        for row in range(len(table_data)):
-            table_data[row][i] = f'<font size="{font_size}">{table_data[row][i]}</font>'
-
+        table.setStyle(TableStyle([('FONT', (i, 0), (i, -1), 'Helvetica', font_size)]))
 
     # Ajoutez la table au PDF
     story.append(table)
