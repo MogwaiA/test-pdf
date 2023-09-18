@@ -359,7 +359,8 @@ def rapports_seismes():
             st.markdown(html_table, unsafe_allow_html=True)
 
             if st.button("Télécharger le rapport PDF"):
-                pdf_bytes = generate_pdf(html_table)
+                formatted_html_table = "<table>{}</table>".format(html_table)
+                pdf_bytes = generate_pdf(formatted_html_table)
                 st.download_button(label="Télécharger le PDF", data=pdf_bytes, file_name="rapport.pdf", mime="application/pdf")
 
 
