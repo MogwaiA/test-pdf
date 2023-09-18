@@ -1,5 +1,4 @@
 import streamlit as st
-from tab_eventid import carte_par_eventid
 from tab_rapportseismes import rapports_seismes
 
 
