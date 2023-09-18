@@ -17,6 +17,10 @@ from fpdf import FPDF
 import tempfile
 from io import BytesIO
 from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import Paragraph, Table, TableStyle
 
 
 def load_data(file):
@@ -149,40 +153,26 @@ def download_list_event(period,mmi=0):
 
 
 def generate_pdf(html_content):
-    # Formatez le HTML pour qu'il soit correctement interprété dans le PDF
-    formatted_html = """
-    <html>
-    <head>
-        <style type="text/css">
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-            }
-        </style>
-    </head>
-    <body>
-         <table>{}</table>
-    </body>
-    </html>
-    """.format(html_content)
-
     # Créez un objet BytesIO pour stocker le PDF en mémoire
     pdf_buffer = BytesIO()
 
     # Créez le document PDF
-    p = canvas.Canvas(pdf_buffer)
+    doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+    styles = getSampleStyleSheet()
+    story = []
 
-    # Écrivez le contenu HTML sur le PDF
-    p.drawString(100, 750, formatted_html)
+    # Ajoutez le contenu HTML sous forme de paragraphe dans le PDF
+    story.append(Paragraph(html_content, styles["Normal"]))
 
-    # Fermez le PDF
-    p.showPage()
-    p.save()
+    # Créez un objet Table à partir du contenu HTML
+    table = Table(style=[('GRID', (0, 0), (-1, -1), 1, (0, 0, 0))])
+    table._argW = html_table.split('\n')
+
+    # Ajoutez la table au PDF
+    story.append(table)
+
+    # Construisez le PDF
+    doc.build(story)
 
     # Retournez les données du PDF
     pdf_buffer.seek(0)
