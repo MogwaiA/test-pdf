@@ -10,13 +10,4 @@ st.set_page_config(
     initial_sidebar_state="expanded",  # Barre latérale ouverte par défaut
 )
 
-tabs = {
-      "Rapports": rapports_seismes,
-      "Carte par séisme": carte_par_eventid      
-}
-
-# Afficher les onglets
-selected_tab = st.sidebar.radio("Sélectionnez un onglet", list(tabs.keys()))
-tabs[selected_tab]()
-
-
+rapports_seismes()
