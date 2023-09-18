@@ -21,6 +21,7 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
+from reportlab.lib import colors
 from bs4 import BeautifulSoup
 
 
@@ -152,32 +153,34 @@ def download_list_event(period,mmi=0):
 
     return df_event
 
+def extract_table_data(html_content):
+    # Analyser le HTML avec BeautifulSoup
+    soup = BeautifulSoup(html_content, 'html.parser')
+    
+    # Extraire les données du tableau
+    table_data = []
+    for row in soup.find_all('tr'):
+        cell_data = [cell.get_text(strip=True) for cell in row.find_all(['th', 'td'])]
+        table_data.append(cell_data)
 
+    return table_data
+
+    
 def generate_pdf(html_content):
     # Créez un objet BytesIO pour stocker le PDF en mémoire
     pdf_buffer = BytesIO()
 
     # Créez le document PDF
     doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
-    styles = getSampleStyleSheet()
     story = []
 
-    # Ajoutez le contenu HTML sous forme de paragraphe dans le PDF
-    story.append(Paragraph(html_content, styles["Normal"]))
-
-    # Analysez le HTML pour extraire les données du tableau
-    soup = BeautifulSoup(html_content, 'html.parser')
-    table_data = []
-    for row in soup.select('table tr'):
-        cell_data = [cell.get_text(strip=True) for cell in row.find_all(['th', 'td'])]
-        table_data.append(cell_data)
+    # Extraire les données du tableau
+    table_data = extract_table_data(html_content)
 
     # Créez un objet Table à partir des données du tableau
-    table = Table(table_data)
-
-    # Appliquez un style à la table
-    style = TableStyle([('GRID', (0, 0), (-1, -1), 1, (0, 0, 0))])
-    table.setStyle(style)
+    table = Table(table_data, colWidths=[80]*len(table_data[0]))
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), (0.9, 0.9, 0.9)),
+                               ('GRID', (0, 0), (-1, -1), 1, (0.2, 0.2, 0.2))]))
 
     # Ajoutez la table au PDF
     story.append(table)
