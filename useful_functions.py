@@ -164,9 +164,19 @@ def generate_pdf(html_content):
     # Ajoutez le contenu HTML sous forme de paragraphe dans le PDF
     story.append(Paragraph(html_content, styles["Normal"]))
 
-    # Créez un objet Table à partir du contenu HTML
-    table = Table(style=[('GRID', (0, 0), (-1, -1), 1, (0, 0, 0))])
-    table._argW = html_table.split('\n')
+    # Analysez le HTML pour extraire les données du tableau
+    soup = BeautifulSoup(html_content, 'html.parser')
+    table_data = []
+    for row in soup.select('table tr'):
+        cell_data = [cell.get_text(strip=True) for cell in row.find_all(['th', 'td'])]
+        table_data.append(cell_data)
+
+    # Créez un objet Table à partir des données du tableau
+    table = Table(table_data)
+
+    # Appliquez un style à la table
+    style = TableStyle([('GRID', (0, 0), (-1, -1), 1, (0, 0, 0))])
+    table.setStyle(style)
 
     # Ajoutez la table au PDF
     story.append(table)
