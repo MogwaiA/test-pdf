@@ -15,7 +15,9 @@ import numpy as np
 import io
 from fpdf import FPDF
 import tempfile
-import weasyprint
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 
 def load_data(file):
