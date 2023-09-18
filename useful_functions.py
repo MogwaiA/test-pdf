@@ -15,6 +15,7 @@ import numpy as np
 import io
 from fpdf import FPDF
 import tempfile
+import weasyprint
 
 
 def load_data(file):
@@ -146,45 +147,6 @@ def download_list_event(period,mmi=0):
     return df_event
 
 
-
-def generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-
-    # Ajoutez le titre centré en haut de la page
-    pdf.set_font("Arial", size=18)
-    pdf.cell(200, 10, txt="EARTHQUAKE @LERTING", ln=True, align='C')
-
-    # Ajoutez un encadré avec les informations spécifiées
-    pdf.set_fill_color(220, 220, 220)  # Couleur de fond de l'encadré
-    pdf.rect(10, 40, 190, 30, "F")  # Coordonnées x, y, largeur, hauteur
-    pdf.set_xy(12, 45)  # Position du texte à l'intérieur de l'encadré
-
-    # Ligne 1 : Number of exposed locations
-    pdf.cell(90, 10, txt="Number of exposed locations : " + str(n_sites_touches), align='L')
-
-    # Ligne 2 : Number of locations exposed to very strong shaking (MMI > 6)
-    pdf.cell(90, 10, txt="Number of locations exposed to very strong shaking (MMI > 6) : " + str(sum(mmi > 6 for mmi in mmi_sites)), align='R')
-    pdf.ln()
-
-    # Ligne 3 : Values in the area exposed to very strong shaking (MMI > 6)
-    pdf.cell(90, 10, txt="Values in the area exposed to very strong shaking (MMI > 6) : " + str(round(sum(value for mmi, value in zip(mmi_sites, values) if mmi > 0), 2)), align='L')
-
-    # Calculez la moitié de la largeur de la page
-    half_page_width = pdf.w / 2
-
-    # Affichez le tableau top_sites_html sur la moitié de la page gauche
-    pdf.set_xy(10, 100)  # Position du tableau
-    pdf.multi_cell(half_page_width, 10, top_sites_html)  # Affichez le contenu du tableau en plusieurs lignes
-
-    # Ajoutez ici le reste du contenu du PDF en utilisant les informations de 'event_data'
-    # Par exemple, vous pouvez ajouter des tableaux, des graphiques, etc.
-
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as temp_file:
-        pdf_output = io.BytesIO()
-        pdf.output(pdf_output)
-        pdf_bytes = pdf_output.getvalue()
-        temp_file.write(pdf_bytes)
-
-    return temp_file.name
+def generate_pdf(html_content):
+    pdf = weasyprint.HTML(string=html_content).write_pdf()
+    return pdf
