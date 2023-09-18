@@ -358,7 +358,7 @@ def rapports_seismes():
             # Afficher le tableau HTML dans Streamlit
             st.markdown(html_table, unsafe_allow_html=True)
 
-            if st.button("Télécharger le rapport PDF"):
+            if st.button("Créer un rapport PDF"):
                 pdf_bytes = generate_pdf(html_table)
                 st.download_button(label="Télécharger le PDF", data=pdf_bytes, file_name="rapport.pdf", mime="application/pdf")
 

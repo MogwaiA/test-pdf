@@ -195,7 +195,9 @@ def generate_pdf(html_content):
 
     for i, col_width in enumerate(col_widths):
         font_size = calculate_font_size(col_width)
-        table.setStyle(TableStyle([('FONT', (i, 0), (i, -1), 'Helvetica', font_size)]))
+        for row in range(len(table_data)):
+            table_data[row][i] = f'<font size="{font_size}">{table_data[row][i]}</font>'
+
 
     # Ajoutez la table au PDF
     story.append(table)
