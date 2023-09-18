@@ -7,5 +7,4 @@ scipy
 openpyxl
 fpdf
 pillow
-pango
-weasyprint
+reportlab
