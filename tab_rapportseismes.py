@@ -11,7 +11,7 @@ def rapports_seismes():
     st.markdown("<h3>Choisir une période :</h3>", unsafe_allow_html=True)
     period = st.selectbox(
         "Sélectionnez la période",
-        ["Un jour", "Trois jours", "Une semaine", "Un mois", "6 mois", "Un an","10 ans","Depuis 1900 (MMI 4 ou plus uniquement)"]
+        ["Une semaine", "Un mois", "6 mois", "Un an","10 ans","Depuis 1900 (MMI 4 ou plus uniquement)"]
     )
 
     # Afficher le message d'avertissement
@@ -20,8 +20,6 @@ def rapports_seismes():
 
     # Convertir la période en nombre de jours
     period_days = {
-        "Un jour": 1,
-        "Trois jours": 3,
         "Une semaine": 7,
         "Un mois": 30,
         "6 mois": 180,
@@ -45,18 +43,21 @@ def rapports_seismes():
 
         with col1:
             # Affichage d'une synthèse des données téléchargées
-            st.subheader("Histogramme du nombre d'id par mmi")
+            st.subheader("Répartition des évènements par sévérité")
             # Arrondir les valeurs de MMI
             event_list['rounded_mmi'] = event_list['properties.mmi'].round()
 
             # Calculer le nombre d'événements par valeur arrondie de MMI
             mmi_counts = event_list['rounded_mmi'].value_counts().sort_index()
+            etiquette = ["Not exposed","Not felt","Weak","Weak","Light","Moderate","Strong","Very Strong","Severe","Violent","Extreme"]
 
             # Créer l'histogramme
+            xtick_positions = np.arange(len(etiquette))
+
             plt.bar(mmi_counts.index, mmi_counts.values)
-            plt.xlabel('MMI arrondi')
+            plt.xlabel('Sévérité (MMI)')
             plt.ylabel("Nombre d'événements")
-            plt.xticks(mmi_counts.index)  # Utiliser les valeurs arrondies comme étiquettes
+            plt.xticks(xtick_positions, etiquette, rotation=45)
             st.pyplot(plt)
         
         with col2:
@@ -90,7 +91,7 @@ def rapports_seismes():
             sorted_event_list = event_list.sort_values(by=tri_cle[tri], ascending=ordre_cle[ordre])
 
             sorted_event_list_renamed = sorted_event_list.rename(
-                columns={'id': 'ID', 'properties.mmi': 'MMI','properties.mag': 'Magnitude', 'properties.url': 'Lien vers USGS'}
+                columns={'id': 'ID','properties.place':'place', 'properties.mmi': 'MMI','properties.mag': 'Magnitude', 'properties.url': 'Lien vers USGS'}
             )
 
             sorted_event_list_renamed["properties.time"] = pd.to_numeric(sorted_event_list_renamed["properties.time"], errors='coerce')
@@ -115,14 +116,14 @@ def rapports_seismes():
 
                 selected_radio_text = st.radio(
                     "Sélectionner un ID :",
-                    [f"ID : {row['ID']} | MMI : {row['MMI']} | Magnitude : {row['Magnitude']} | Date : {row['Date']}" for _, row in sorted_event_list_renamed[start_idx:end_idx].iterrows()]
+                    [f"{row['place']} | MMI : {row['MMI']} | Magnitude : {row['Magnitude']} | Date : {row['Date']} | {row['ID']}" for _, row in sorted_event_list_renamed[start_idx:end_idx].iterrows()]
                 )
 
                 # Afficher la pagination
                 st.write(f"Page {page} sur {num_pages}")
 
             # Extraire l'ID du texte sélectionné
-            selected_id = selected_radio_text.split(':')[1].split('|')[0].strip()
+            selected_id = selected_radio_text.split('|')[-1].strip()
 
             selected_row = sorted_event_list_renamed[sorted_event_list_renamed['ID'] == selected_id].iloc[0]
             st.write("Lien vers USGS :")
@@ -224,9 +225,14 @@ def rapports_seismes():
 
             if n_sites_touches>0:
 
-                st.subheader("5 most exposed sites")
+                n_row_top_sites=min(5,n_sites_touches)
+                if n_sites_touches>5:
+                    st.subheader("5 most exposed sites")
+                else:
+                    st.subheader(f"All {n_row_top_sites} exposed sites")
                 # Trier le DataFrame par ordre décroissant de MMI et sélectionner les 5 premiers
-                top_sites = df.sort_values(by='MMI', ascending=False).head(5)
+                
+                top_sites = df.sort_values(by='MMI', ascending=False).head(n_row_top_sites)
                 top_sites["TIV"]=round(top_sites["TIV"],2)
 
                 top_sites = top_sites.rename(
@@ -352,13 +358,12 @@ def rapports_seismes():
             # Afficher le tableau HTML dans Streamlit
             st.markdown(html_table, unsafe_allow_html=True)
 
-    
-            # Exemple d'utilisation de la fonction generate_pdf avec le chemin spécifié par l'utilisateur
-            if st.button("Télécharger le PDF"):
-                pdf_file_path = generate_pdf(n_sites_touches, mmi_sites, values, top_sites_html)
-                st.success("Le PDF a été généré et peut être téléchargé à partir du lien ci-dessous.")
-                st.markdown(f"Téléchargez le PDF [ici]({pdf_file_path})")
-                    
+            if st.button("Télécharger le résumé en PDF"):
+                pdf_bytes = generate_pdf(html_table)
+                st.download_button(label="Télécharger le PDF", data=pdf_bytes, file_name="rapport.pdf", mime="application/pdf")
+                st.success(f"Le PDF a été généré avec succès.)")
+
+
         
     else: 
         st.warning("Aucun évènement observé. Veuillez sélectionner une autre période de temps.")
