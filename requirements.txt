@@ -7,4 +7,5 @@ scipy
 openpyxl
 fpdf
 pillow
+pango
 weasyprint
