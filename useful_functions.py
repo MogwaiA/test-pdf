@@ -165,7 +165,7 @@ def extract_table_data(html_content):
 
     return table_data
 
-    
+
 def generate_pdf(html_content):
     # Créez un objet BytesIO pour stocker le PDF en mémoire
     pdf_buffer = BytesIO()
@@ -178,7 +178,7 @@ def generate_pdf(html_content):
     table_data = extract_table_data(html_content)
 
     # Créez un objet Table à partir des données du tableau
-    table = Table(table_data, colWidths=[80]*len(table_data[0]))
+    table = Table(table_data, colWidths=[50]*len(table_data[0]))
     table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), (0.9, 0.9, 0.9)),
                                ('GRID', (0, 0), (-1, -1), 1, (0.2, 0.2, 0.2))]))
 
