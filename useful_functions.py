@@ -152,9 +152,21 @@ def generate_pdf(html_content):
     # Formatez le HTML pour qu'il soit correctement interprété dans le PDF
     formatted_html = """
     <html>
-    <head><style type="text/css">table {width:100%; border-collapse: collapse;} th, td {border: 1px solid black; padding: 8px; text-align: left;}</style></head>
+    <head>
+        <style type="text/css">
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+            }
+        </style>
+    </head>
     <body>
-    {}
+        {}
     </body>
     </html>
     """.format(html_content)
