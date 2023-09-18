@@ -21,6 +21,7 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
+from bs4 import BeautifulSoup
 
 
 def load_data(file):
