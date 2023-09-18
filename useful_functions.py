@@ -149,6 +149,16 @@ def download_list_event(period,mmi=0):
 
 
 def generate_pdf(html_content):
+    # Formatez le HTML pour qu'il soit correctement interprété dans le PDF
+    formatted_html = """
+    <html>
+    <head><style type="text/css">table {width:100%; border-collapse: collapse;} th, td {border: 1px solid black; padding: 8px; text-align: left;}</style></head>
+    <body>
+    {}
+    </body>
+    </html>
+    """.format(html_content)
+
     # Créez un objet BytesIO pour stocker le PDF en mémoire
     pdf_buffer = BytesIO()
 
@@ -156,7 +166,7 @@ def generate_pdf(html_content):
     p = canvas.Canvas(pdf_buffer)
 
     # Écrivez le contenu HTML sur le PDF
-    p.drawString(100, 750, html_content)
+    p.drawString(100, 750, formatted_html)
 
     # Fermez le PDF
     p.showPage()
