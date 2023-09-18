@@ -166,7 +166,7 @@ def generate_pdf(html_content):
         </style>
     </head>
     <body>
-        {}
+         <table>{}</table>
     </body>
     </html>
     """.format(html_content)
