@@ -171,7 +171,7 @@ def calculate_font_size(col_width):
     max_font_size = 40
 
     # Calculez la taille de la police en fonction de la largeur de la colonne
-    font_size = base_font_size * (col_width / 80)  # 80 est la largeur de référence
+    font_size = base_font_size * (col_width)  # 80 est la largeur de référence
 
     # Assurez-vous que la taille de la police ne dépasse pas la taille maximale
     return min(font_size, max_font_size)
