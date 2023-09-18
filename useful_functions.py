@@ -189,7 +189,7 @@ def generate_pdf(html_content):
     table_data = extract_table_data(html_content)
 
     num_cols = len(table_data[0])
-    col_widths = [50/num_cols] * num_cols
+    col_widths = [80/num_cols] * num_cols
 
     # Créez un objet Table à partir des données du tableau
     table = Table(table_data, colWidths=col_widths)
