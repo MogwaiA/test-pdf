@@ -165,6 +165,17 @@ def extract_table_data(html_content):
 
     return table_data
 
+def calculate_font_size(col_width):
+    # Ajustez ces valeurs selon vos besoins
+    base_font_size = 10
+    max_font_size = 40
+
+    # Calculez la taille de la police en fonction de la largeur de la colonne
+    font_size = base_font_size * (col_width / 80)  # 80 est la largeur de référence
+
+    # Assurez-vous que la taille de la police ne dépasse pas la taille maximale
+    return min(font_size, max_font_size)
+
 
 def generate_pdf(html_content):
     # Créez un objet BytesIO pour stocker le PDF en mémoire
@@ -181,6 +192,10 @@ def generate_pdf(html_content):
     table = Table(table_data, colWidths=[50]*len(table_data[0]))
     table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, -1), (0.9, 0.9, 0.9)),
                                ('GRID', (0, 0), (-1, -1), 1, (0.2, 0.2, 0.2))]))
+
+    for i, col_width in enumerate(col_widths):
+        font_size = calculate_font_size(col_width)
+        table.setStyle(TableStyle([('FONT', (i, 0), (i, -1), 'Helvetica', font_size)]))
 
     # Ajoutez la table au PDF
     story.append(table)
