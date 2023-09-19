@@ -171,7 +171,7 @@ def calculate_font_size(col_width):
     max_font_size = 40
 
     # Calculez la taille de la police en fonction de la largeur de la colonne
-    font_size = base_font_size * (col_width)  # 80 est la largeur de référence
+    font_size = base_font_size * (col_width / 80)  # 80 est la largeur de référence
 
     # Assurez-vous que la taille de la police ne dépasse pas la taille maximale
     return min(font_size, max_font_size)
@@ -189,7 +189,7 @@ def generate_pdf(html_content):
     table_data = extract_table_data(html_content)
 
     num_cols = len(table_data[0])
-    col_widths = [80/num_cols] * num_cols
+    col_widths = [150/num_cols] * num_cols
 
     # Créez un objet Table à partir des données du tableau
     table = Table(table_data, colWidths=col_widths)
