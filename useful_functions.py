@@ -224,7 +224,7 @@ def generate_pdf_report(title, n_sites_touches, var):
     content = []
 
     # Titre centralisé
-    title_text = "<h4 style='text-align: left;'>T<font size='24'>@LERTING EARTHQUAKE</font></h4>"
+    title_text = "<h4 style='text-align: center;'><font size='40'>@LERTING EARTHQUAKE</font></h4>"
     content.append(Paragraph(title_text, styles["Normal"]))
     content.append(Paragraph("<br/><br/>", styles["Normal"]))
 
