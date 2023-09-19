@@ -17,7 +17,7 @@ from fpdf import FPDF
 import tempfile
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate,Spacer,Frame
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Frame, Flowable, Column
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
