@@ -210,3 +210,32 @@ def generate_pdf(html_content):
     pdf_buffer.seek(0)
     return pdf_buffer.read()
 
+def generate_pdf_report(title, n_sites_touches, var):
+    # Créez un objet de type fichier PDF
+    pdf_filename = "rapport_seisme.pdf"
+    pdf = SimpleDocTemplate(pdf_filename, pagesize=letter)
+
+    # Styles du rapport
+    styles = getSampleStyleSheet()
+
+    # Contenu du rapport
+    content = []
+
+    # Titre centralisé
+    title_text = "<center><font size='24'>@LERTING EARTHQUAKE</font></center><br/><br/>"
+    content.append(Paragraph(title_text, styles["Normal"]))
+
+    # Contenu de la variable title
+    content.append(Paragraph(title, styles["Normal"]))
+    content.append(Paragraph("<br/><br/>", styles["Normal"]))
+
+    # Phrase avec le nombre de sites touchés et la valeur totale assurée
+    phrase = f"Tremblement de terre ayant touché {n_sites_touches} sites pour une valeur assurée totale de {var} k€"
+    content.append(Paragraph(phrase, styles["Normal"]))
+
+    # Construire le PDF
+    pdf.build(content)
+
+    return pdf_filename
+
+
