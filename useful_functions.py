@@ -17,7 +17,7 @@ from fpdf import FPDF
 import tempfile
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Frame, Flowable, Column
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
@@ -272,10 +272,10 @@ def generate_pdf_report(title, n_sites_touches, var, df):
         content.append(table)
         
         left_column_frame = Frame(
-            doc.leftMargin,
-            doc.bottomMargin,
-            doc.width / 2 - doc.leftMargin - doc.rightMargin,
-            doc.height - doc.topMargin - doc.bottomMargin,
+            pdf.leftMargin,
+            pdf.bottomMargin,
+            pdf.width / 2 - pdf.leftMargin - pdf.rightMargin,
+            pdf.height - pdf.topMargin - pdf.bottomMargin,
             id='left_column_frame'
         )
 
