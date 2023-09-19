@@ -359,7 +359,7 @@ def rapports_seismes():
             st.markdown(html_table, unsafe_allow_html=True)
 
             if st.button("Créer un rapport PDF"):
-                pdf_filename = generate_pdf_report(title, n_sites_touches, var)
+                pdf_filename = generate_pdf_report(title, n_sites_touches, var,top_sites)
                 st.download_button(label="Télécharger le PDF", data=pdf_filename, file_name="rapport.pdf", mime="application/pdf")
 
 

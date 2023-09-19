@@ -233,7 +233,7 @@ def generate_pdf_report(title, n_sites_touches, var, top_sites):
     content.append(Spacer(1, 12)) 
 
     # Phrase avec le nombre de sites touchés et la valeur totale assurée
-    phrase = f"Tremblement de terre ayant touché {n_sites_touches} sites pour une valeur assurée totale de {var} k€"
+    phrase = f"Tremblement de terre ayant touché {n_sites_touches} site(s) pour une valeur assurée totale de {var} k€"
     content.append(Paragraph(phrase, styles["Normal"]))
 
     # Ajouter le tableau avec les informations de top_sites
