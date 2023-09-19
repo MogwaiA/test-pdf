@@ -239,8 +239,7 @@ def generate_pdf_report(title, n_sites_touches, var, df):
     
     # Ajouter le tableau avec les informations de top_sites
 
-    content.append(Paragraph("<h2>5 most exposed sites</h2>", styles["Heading2"]))
-    content.append(Spacer(1, 12))  # Espacement entre le titre et le tableau
+    
     
     data = df.rename(
         columns={'TIV': 'Insured Value', 'Entite': 'Filiale'}
@@ -264,13 +263,31 @@ def generate_pdf_report(title, n_sites_touches, var, df):
         table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('GRID', (0, 0), (-1, -1), 1, colors.black)
         ]))
         content.append(table)
+        
+        left_column_frame = Frame(
+            doc.leftMargin,
+            doc.bottomMargin,
+            doc.width / 2 - doc.leftMargin - doc.rightMargin,
+            doc.height - doc.topMargin - doc.bottomMargin,
+            id='left_column_frame'
+        )
+
+        left_column = [Paragraph("<h2>5 most exposed sites</h2>", styles["Heading2"]),
+                        Spacer(1, 12),  # Espacement entre le titre et le tableau
+                        table]
+
+        # Créer une Flowable pour la colonne de gauche
+        left_column_flowable = Column(left_column, [1, -1])
+
+        # Ajouter la colonne de gauche à la page
+        flowables = [left_column_flowable]
 
 
     # Construire le PDF
