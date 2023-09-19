@@ -17,7 +17,7 @@ from fpdf import FPDF
 import tempfile
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer,Frame,Column
+from reportlab.platypus import SimpleDocTemplate,Spacer
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
@@ -248,6 +248,17 @@ def generate_pdf_report(title, n_sites_touches, var, df):
 
     if n_sites_touches>0:
 
+        left_column_frame = Frame(
+            doc.leftMargin,
+            doc.bottomMargin,
+            doc.width / 2 - doc.leftMargin - doc.rightMargin,
+            doc.height - doc.topMargin - doc.bottomMargin,
+            id='left_column_frame'
+        )
+        
+        content.append(Paragraph("<h2>5 most exposed sites</h2>", styles["Heading2"]))
+        content.append(Spacer(1, 12))  # Espacement entre le titre et le tableau
+        
         n_row_top_sites=min(5,n_sites_touches)
 
         # Trier le DataFrame par ordre décroissant de MMI et sélectionner les 5 premiers
@@ -269,25 +280,11 @@ def generate_pdf_report(title, n_sites_touches, var, df):
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
             ('GRID', (0, 0), (-1, -1), 1, colors.black)
         ]))
+        table.hAlign = 'LEFT'
+        
         content.append(table)
         
-        left_column_frame = Frame(
-            pdf.leftMargin,
-            pdf.bottomMargin,
-            pdf.width / 2 - pdf.leftMargin - pdf.rightMargin,
-            pdf.height - pdf.topMargin - pdf.bottomMargin,
-            id='left_column_frame'
-        )
 
-        left_column = [Paragraph("<h2>5 most exposed sites</h2>", styles["Heading2"]),
-                        Spacer(1, 12),  # Espacement entre le titre et le tableau
-                        table]
-
-        # Créer une Flowable pour la colonne de gauche
-        left_column_flowable = Column(left_column, [1, -1])
-
-        # Ajouter la colonne de gauche à la page
-        flowables = [left_column_flowable]
 
 
     # Construire le PDF
