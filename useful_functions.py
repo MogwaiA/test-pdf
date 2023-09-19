@@ -210,7 +210,7 @@ def generate_pdf(html_content):
     pdf_buffer.seek(0)
     return pdf_buffer.read()
 
-def generate_pdf_report(title, n_sites_touches, var, top_sites):
+def generate_pdf_report(title, n_sites_touches, var, df):
     # Créez un objet de type fichier PDF
     pdf_buffer = BytesIO()
 
@@ -235,10 +235,29 @@ def generate_pdf_report(title, n_sites_touches, var, top_sites):
     # Phrase avec le nombre de sites touchés et la valeur totale assurée
     phrase = f"Tremblement de terre ayant touché {n_sites_touches} site(s) pour une valeur assurée totale de {var} k€"
     content.append(Paragraph(phrase, styles["Normal"]))
-
+    content.append(Spacer(1, 12))
+    
     # Ajouter le tableau avec les informations de top_sites
-    if len(top_sites) > 0:
-        data = [["Nom", "Filiale","Latitude","Longitude", "Insured Value","MMI"]]
+
+    content.append(Paragraph("<h2>5 most exposed sites</h2>", styles["Heading2"]))
+    content.append(Spacer(1, 12))  # Espacement entre le titre et le tableau
+    
+    data = df.rename(
+        columns={'TIV': 'Insured Value', 'Entite': 'Filiale'}
+    )
+    data["Insured Value"]=round(data["Insured Value"],2)
+
+    if n_sites_touches>0:
+
+        n_row_top_sites=min(5,n_sites_touches)
+        st.subheader("5 most exposed sites")
+
+        # Trier le DataFrame par ordre décroissant de MMI et sélectionner les 5 premiers
+                
+        top_sites = data.sort_values(by='MMI', ascending=False).head(n_row_top_sites)
+
+        data = [["Nom", "Filiale","Insured Value","MMI"]]
+
         for _, row in top_sites.iterrows():
             data.append([row["Nom"], row["Filiale"], row["Latitude"],row["Longitude"],row["Insured Value"],row["MMI"]])
 
