@@ -210,7 +210,7 @@ def generate_pdf(html_content):
     pdf_buffer.seek(0)
     return pdf_buffer.read()
 
-def generate_pdf_report(title, n_sites_touches, var):
+def generate_pdf_report(title, n_sites_touches, var, top_sites):
     # Créez un objet de type fichier PDF
     pdf_buffer = BytesIO()
 
@@ -235,6 +235,25 @@ def generate_pdf_report(title, n_sites_touches, var):
     # Phrase avec le nombre de sites touchés et la valeur totale assurée
     phrase = f"Tremblement de terre ayant touché {n_sites_touches} sites pour une valeur assurée totale de {var} k€"
     content.append(Paragraph(phrase, styles["Normal"]))
+
+    # Ajouter le tableau avec les informations de top_sites
+    if len(top_sites) > 0:
+        data = [["Nom", "Filiale","Latitude","Longitude", "Insured Value","MMI"]]
+        for _, row in top_sites.iterrows():
+            data.append([row["Nom"], row["Filiale"], row["Latitude"],row["Longitude"],row["Insured Value"],row["MMI"]])
+
+        table = Table(data)
+        table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ]))
+        content.append(table)
+
 
     # Construire le PDF
     pdf.build(content)
