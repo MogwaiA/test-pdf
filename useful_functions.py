@@ -17,7 +17,7 @@ from fpdf import FPDF
 import tempfile
 from io import BytesIO
 from reportlab.pdfgen import canvas
-from reportlab.platypus import SimpleDocTemplate
+from reportlab.platypus import SimpleDocTemplate,Spacer
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import Paragraph, Table, TableStyle
@@ -224,13 +224,13 @@ def generate_pdf_report(title, n_sites_touches, var):
     content = []
 
     # Titre centralisé
-    title_text = "<h4 style='text-align: center;'><font size='40'>@LERTING EARTHQUAKE</font></h4>"
-    content.append(Paragraph(title_text, styles["Normal"]))
-    content.append(Paragraph("<br/><br/>", styles["Normal"]))
+    title_text = "<h1 style='text-align: center;'>@LERTING EARTHQUAKE</h4>"
+    content.append(Paragraph(title_text, styles["Heading1"]))
+    content.append(Spacer(1, 12)) 
 
     # Contenu de la variable title
     content.append(Paragraph(title, styles["Normal"]))
-    content.append(Paragraph("<br/><br/>", styles["Normal"]))
+    content.append(Spacer(1, 12)) 
 
     # Phrase avec le nombre de sites touchés et la valeur totale assurée
     phrase = f"Tremblement de terre ayant touché {n_sites_touches} sites pour une valeur assurée totale de {var} k€"

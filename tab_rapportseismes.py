@@ -360,7 +360,6 @@ def rapports_seismes():
 
             if st.button("Créer un rapport PDF"):
                 pdf_filename = generate_pdf_report(title, n_sites_touches, var)
-                #pdf_bytes = generate_pdf(html_table)
                 st.download_button(label="Télécharger le PDF", data=pdf_filename, file_name="rapport.pdf", mime="application/pdf")
 
 
