@@ -212,8 +212,10 @@ def generate_pdf(html_content):
 
 def generate_pdf_report(title, n_sites_touches, var):
     # Créez un objet de type fichier PDF
-    pdf_filename = "rapport_seisme.pdf"
-    pdf = SimpleDocTemplate(pdf_filename, pagesize=letter)
+    pdf_buffer = BytesIO()
+
+    
+    pdf = SimpleDocTemplate(pdf_buffer, pagesize=letter)
 
     # Styles du rapport
     styles = getSampleStyleSheet()
@@ -235,7 +237,8 @@ def generate_pdf_report(title, n_sites_touches, var):
 
     # Construire le PDF
     pdf.build(content)
+    pdf_buffer.seek(0)
 
-    return pdf_filename
+    return pdf_buffer.read()
 
 
