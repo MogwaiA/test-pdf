@@ -23,7 +23,7 @@ def rapports_seismes():
         "Une semaine": 7,
         "Un mois": 30,
         "6 mois": 180,
-        "Un an": 380,
+        "Un an": 365,
         "10 ans" : 3653,
         "Depuis 1900 (MMI 4 ou plus uniquement)" : -1
     }
